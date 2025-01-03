@@ -7,6 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        int articleLastId =0;
 
         System.out.println("== 자바 텍스트 게시판 ==");
         System.out.println("== 프로그램 시작 ==");
@@ -24,7 +25,9 @@ public class Main {
                 System.out.printf("내용 : ");
                 String content =sc.nextLine();
 
-                int id = 1;
+                int id = articleLastId+1;
+                articleLastId++;
+                
                 System.out.println(id+"번 게시물이 등록되었습니다.\n");
             }
             else if (cmd.equals("exit")) {
