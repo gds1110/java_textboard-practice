@@ -27,8 +27,12 @@ public class Main {
 
                 int id = articleLastId+1;
                 articleLastId++;
-                
+
+                Article article = new Article(id,title,content);
+
+
                 System.out.println(id+"번 게시물이 등록되었습니다.\n");
+                System.out.println("생성된 게시물 객체 : "+article);
             }
             else if (cmd.equals("exit")) {
                 System.out.println("프로그램을 종료합니다.");
@@ -42,5 +46,18 @@ public class Main {
         System.out.println("== 프로그램 종료 ==");
         sc.close(); // Scanner 사용했으면 필수.
 
+    }
+}
+
+class Article
+{
+    int id ;
+    String title ;
+    String content ;
+
+    public Article(int id, String title, String content) {
+        this.id =id;
+        this.title=title;
+        this.content=content;
     }
 }
