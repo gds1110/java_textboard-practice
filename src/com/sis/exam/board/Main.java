@@ -1,6 +1,8 @@
 package com.sis.exam.board;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -8,6 +10,9 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         int articleLastId =0;
+        List<Article> articleList =  new ArrayList<>();
+
+
 
         System.out.println("== 자바 텍스트 게시판 ==");
         System.out.println("== 프로그램 시작 ==");
@@ -29,12 +34,27 @@ public class Main {
                 articleLastId++;
 
                 Article article = new Article(id,title,content);
-
+                articleList.add(article);
 
                 System.out.println(id+"번 게시물이 등록되었습니다.\n");
                 System.out.println("생성된 게시물 객체 : "+article);
-            }
-            else if (cmd.equals("exit")) {
+
+            } else if (cmd.equals("/user/article/list")) {
+
+                System.out.println("== 게시물 리스트 ==");
+                System.out.println("----------------");
+                System.out.println("번호 / 제목");
+                System.out.println("----------------");
+
+                for(Article article: articleList)
+                {
+                    System.out.printf("%d / %s\n",article.id,article.title);
+                }
+
+
+            } else if (cmd.equals("/user/article/detail")) {
+
+            } else if (cmd.equals("exit")) {
                 System.out.println("프로그램을 종료합니다.");
                 break;
             }
@@ -54,6 +74,7 @@ class Article
     int id ;
     String title ;
     String content ;
+
 
     public Article(int id, String title, String content) {
         this.id =id;
