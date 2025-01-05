@@ -6,12 +6,24 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         int articleLastId =0;
+
+        Article lastArticle = null;
         List<Article> articleList =  new ArrayList<>();
 
+        addTestcase(articleList);
+        if(!articleList.isEmpty())
+        {
+            articleLastId = articleList.getLast().id;
+            lastArticle = articleList.getLast();
+
+        }
 
 
         System.out.println("== 자바 텍스트 게시판 ==");
@@ -35,6 +47,7 @@ public class Main {
 
                 Article article = new Article(id,title,content);
                 articleList.add(article);
+                lastArticle = article;
 
                 System.out.println(id+"번 게시물이 등록되었습니다.\n");
                 System.out.println("생성된 게시물 객체 : "+article);
@@ -46,14 +59,28 @@ public class Main {
                 System.out.println("번호 / 제목");
                 System.out.println("----------------");
 
-                for(Article article: articleList)
+//                for(Article article: articleList)
+//                {
+//                    System.out.printf("%d / %s\n",article.id,article.title);
+//                }
+
+                for(int i=articleList.size()-1;i>=0;i--)
                 {
-                    System.out.printf("%d / %s\n",article.id,article.title);
+                    Article article =articleList.get(i);
+                    System.out.println(article);
                 }
 
 
             } else if (cmd.equals("/user/article/detail")) {
 
+                if(lastArticle!=null) {
+                    System.out.println("== 게시물 상세보기 ==");
+                    System.out.println(lastArticle);
+                }
+                else
+                {
+                    System.out.println("게시물이 존재하지 않습니다.");
+                }
             } else if (cmd.equals("exit")) {
                 System.out.println("프로그램을 종료합니다.");
                 break;
@@ -65,6 +92,14 @@ public class Main {
 
         System.out.println("== 프로그램 종료 ==");
         sc.close(); // Scanner 사용했으면 필수.
+
+    }
+
+    private static void addTestcase(List<Article> articleList) {
+
+        articleList.add(new Article(1,"제목","111"));
+        articleList.add(new Article(2,"제목","222"));
+        articleList.add(new Article(3,"제목","333"));
 
     }
 }
