@@ -34,6 +34,7 @@ public class Main {
             String cmd = sc.nextLine();
 
             Rq rq = new Rq(cmd);
+            Map<String,String> params = rq.getParams();
 
             System.out.printf("입력 된 명령어 : %s\n", cmd);
 
@@ -76,14 +77,26 @@ public class Main {
 
             } else if (rq.getUrlPath().equals("/user/article/detail")) {
 
-                if(lastArticle!=null) {
-                    System.out.println("== 게시물 상세보기 ==");
-                    System.out.println(lastArticle);
-                }
-                else
+                int id = Integer.parseInt(params.get("id"));
+
+                if(articleList.isEmpty())
                 {
-                    System.out.println("게시물이 존재하지 않습니다.");
+                    System.out.println("게시물이 존재하지 않습니다");
+                    continue;
                 }
+
+
+                if(id>articleList.size())
+                {
+                    System.out.println("해당 게시물은 존재하지 않습니다");
+                    continue;
+                }
+
+                Article article = articleList.get(id-1);
+
+                System.out.println(article);
+
+
             } else if (rq.getUrlPath().equals("exit")) {
                 System.out.println("프로그램을 종료합니다.");
                 break;
