@@ -1,9 +1,7 @@
 package com.sis.exam.board;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -16,6 +14,8 @@ public class Main {
 
         Article lastArticle = null;
         List<Article> articleList =  new ArrayList<>();
+
+
 
         addTestcase(articleList);
         if(!articleList.isEmpty())
@@ -32,9 +32,12 @@ public class Main {
         while (true) {
             System.out.printf("명령) ");
             String cmd = sc.nextLine();
+
+            Rq rq = new Rq(cmd);
+
             System.out.printf("입력 된 명령어 : %s\n", cmd);
 
-            if (cmd.equals("/user/article/write")) {
+            if (rq.getUrlPath().equals("/user/article/write")) {
                 System.out.println("==게시물 등록==");
                 System.out.printf("제목 : ");
                 String title = sc.nextLine();
@@ -52,7 +55,7 @@ public class Main {
                 System.out.println(id+"번 게시물이 등록되었습니다.\n");
                 System.out.println("생성된 게시물 객체 : "+article);
 
-            } else if (cmd.equals("/user/article/list")) {
+            } else if (rq.getUrlPath().equals("/user/article/list")) {
 
                 System.out.println("== 게시물 리스트 ==");
                 System.out.println("----------------");
@@ -71,7 +74,7 @@ public class Main {
                 }
 
 
-            } else if (cmd.equals("/user/article/detail")) {
+            } else if (rq.getUrlPath().equals("/user/article/detail")) {
 
                 if(lastArticle!=null) {
                     System.out.println("== 게시물 상세보기 ==");
@@ -81,7 +84,7 @@ public class Main {
                 {
                     System.out.println("게시물이 존재하지 않습니다.");
                 }
-            } else if (cmd.equals("exit")) {
+            } else if (rq.getUrlPath().equals("exit")) {
                 System.out.println("프로그램을 종료합니다.");
                 break;
             }
@@ -124,5 +127,65 @@ class Article
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 '}';
+    }
+}
+
+
+class Rq{
+    String url;
+
+    Map<String,String> params;
+    String urlPath;
+
+    public Rq(String url) {
+        this.url = url;
+        params = Util.getParamsFromUrl(url);
+        urlPath = Util.getUrlPathFromUrl(url);
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public String getUrlPath() {
+        return urlPath;
+    }
+}
+
+
+class Util{
+
+    static Map<String,String> getParamsFromUrl(String url){
+        System.out.println("getParamsFromUrl 실행됨");
+        Map<String,String> params = new HashMap<>();
+
+        String[] urlBits = url.split("\\?",2);
+
+        if(urlBits.length==1)
+        {
+            return params;
+        }
+
+
+        String queryStr = urlBits[1];
+
+        for(String bit : queryStr.split("&"))
+        {
+            String[] bits = bit.split("=",2);
+
+            if(bits.length==1)
+            {
+                continue ;
+            }
+
+            params.put(bits[0],bits[1]);
+        }
+
+        return params;
+    }
+
+    public static String getUrlPathFromUrl(String url) {
+        System.out.println("getUrlPathFromUrl 실행됨");
+        return url.split("\\?",2)[0];
     }
 }
