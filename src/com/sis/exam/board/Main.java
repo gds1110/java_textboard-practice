@@ -63,6 +63,7 @@ public class Main {
                 System.out.println("번호 / 제목");
                 System.out.println("----------------");
 
+                List<Article> sortedArticleList = articleList;
                 boolean orderByIdDesc = true;
 
                 if(params.containsKey("orderBy")&&params.get("orderBy").equals("idAsc"))
@@ -72,30 +73,23 @@ public class Main {
                 }
                 if(orderByIdDesc)
                 {
-                    for(int i=articleList.size()-1;i>=0;i--)
-                    {
-                        Article article = articleList.get(i);
-                        System.out.println(article);
-                    }
-                }
-                else
-                {
-                    for(Article article : articleList)
-                    {
-                        System.out.println(article);
-                    }
+                    sortedArticleList = Util.reverseList(sortedArticleList);
                 }
 
+                for(Article article : sortedArticleList)
+                {
+                    System.out.println(article);
+                }
 //                for(Article article: articleList)
 //                {
 //                    System.out.printf("%d / %s\n",article.id,article.title);
 //                }
-
-                for(int i=articleList.size()-1;i>=0;i--)
-                {
-                    Article article =articleList.get(i);
-                    System.out.println(article);
-                }
+//
+//                for(int i=articleList.size()-1;i>=0;i--)
+//                {
+//                    Article article =articleList.get(i);
+//                    System.out.println(article);
+//                }
 
 
             } else if (rq.getUrlPath().equals("/user/article/detail")) {
@@ -229,7 +223,7 @@ class Util{
             {
                 continue ;
             }
-
+            System.out.println("bits[0] = "+bits[0]+" bits[1] = "+bits[1]);
             params.put(bits[0],bits[1]);
         }
 
@@ -239,5 +233,19 @@ class Util{
     public static String getUrlPathFromUrl(String url) {
         System.out.println("getUrlPathFromUrl 실행됨");
         return url.split("\\?",2)[0];
+
     }
+
+    public static<T> List<T> reverseList(List<T> list)
+    {
+
+        List<T> reverse = new ArrayList<T>(list.size());
+
+        for(int i=list.size()-1;i>=0;i--)
+        {
+            reverse.add(list.get(i));
+        }
+        return reverse;
+    }
+
 }
