@@ -63,6 +63,29 @@ public class Main {
                 System.out.println("번호 / 제목");
                 System.out.println("----------------");
 
+                boolean orderByIdDesc = true;
+
+                if(params.containsKey("orderBy")&&params.get("orderBy").equals("idAsc"))
+                {
+                    orderByIdDesc =false;
+                    //Collections.reverse(articleList);
+                }
+                if(orderByIdDesc)
+                {
+                    for(int i=articleList.size()-1;i>=0;i--)
+                    {
+                        Article article = articleList.get(i);
+                        System.out.println(article);
+                    }
+                }
+                else
+                {
+                    for(Article article : articleList)
+                    {
+                        System.out.println(article);
+                    }
+                }
+
 //                for(Article article: articleList)
 //                {
 //                    System.out.printf("%d / %s\n",article.id,article.title);
