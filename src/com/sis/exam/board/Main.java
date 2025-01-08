@@ -58,12 +58,35 @@ public class Main {
 
             } else if (rq.getUrlPath().equals("/user/article/list")) {
 
+
                 System.out.println("== 게시물 리스트 ==");
                 System.out.println("----------------");
                 System.out.println("번호 / 제목");
                 System.out.println("----------------");
 
-                List<Article> sortedArticleList = articleList;
+                List<Article> filteredArticles= articleList;
+
+                String searchKeywordIndex = "searchKeyword";
+                if(params.containsKey(searchKeywordIndex))
+                {
+                    String searchKeyword = params.get(searchKeywordIndex);
+                    filteredArticles= new ArrayList<>();
+
+                    for(Article article : articleList)
+                    {
+                        System.out.println(articleList.size());
+                        System.out.println(article);
+                        boolean matched = article.title.contains(searchKeyword)||article.content.contains(searchKeyword);
+
+                        if(matched)
+                        {
+                            filteredArticles.add(article);
+                        }
+                    }
+                }
+
+                List<Article> sortedArticles = filteredArticles;
+
                 boolean orderByIdDesc = true;
 
                 if(params.containsKey("orderBy")&&params.get("orderBy").equals("idAsc"))
@@ -73,10 +96,10 @@ public class Main {
                 }
                 if(orderByIdDesc)
                 {
-                    sortedArticleList = Util.reverseList(sortedArticleList);
+                    sortedArticles = Util.reverseList(filteredArticles);
                 }
 
-                for(Article article : sortedArticleList)
+                for(Article article : sortedArticles)
                 {
                     System.out.println(article);
                 }
@@ -146,9 +169,10 @@ public class Main {
 
     private static void addTestcase(List<Article> articleList) {
 
-        articleList.add(new Article(1,"제목","111"));
-        articleList.add(new Article(2,"제목","222"));
-        articleList.add(new Article(3,"제목","333"));
+        for(int i=0;i<100;i++)
+        {
+            articleList.add(new Article(i,"제목"+i,"내용"+i));
+        }
 
     }
 }
