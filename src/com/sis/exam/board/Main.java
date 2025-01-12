@@ -1,6 +1,8 @@
 package com.sis.exam.board;
 
 
+import com.sis.exam.board.container.Container;
+
 import java.util.*;
 
 public class Main {
@@ -11,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = Container.sc;
 
 
         Article lastArticle = null;
@@ -38,7 +40,7 @@ public class Main {
 
             if (rq.getUrlPath().equals("/user/article/write"))
             {
-                actionUserArticleWrite(sc);
+                actionUserArticleWrite();
                 articleLastId++;
             }
             else if (rq.getUrlPath().equals("/user/article/list"))
@@ -51,11 +53,11 @@ public class Main {
             }
             else if(rq.getUrlPath().equals("/user/article/modify"))
             {
-                actionUserArticleModify(sc,rq);
+                actionUserArticleModify(rq);
             }
             else if(rq.getUrlPath().equals("/user/article/delete"))
             {
-                actionUserArticleDelete(sc,rq);
+                actionUserArticleDelete(rq);
             }
             else if (rq.getUrlPath().equals("exit"))
             {
@@ -73,7 +75,7 @@ public class Main {
 
     }
 
-    private static void actionUserArticleDelete(Scanner sc, Rq rq) {
+    private static void actionUserArticleDelete(Rq rq) {
         Map<String,String> params = rq.getParams();
         if(params.containsKey("id")==false)
         {
@@ -114,7 +116,7 @@ public class Main {
         System.out.printf(id+"번 게시물이 삭제되었습니다.");
     }
 
-    private static void actionUserArticleModify(Scanner sc, Rq rq) {
+    private static void actionUserArticleModify(Rq rq) {
         Map<String,String> params = rq.getParams();
         if(params.containsKey("id")==false)
         {
@@ -150,9 +152,9 @@ public class Main {
             return;
         }
         System.out.printf("새 제목 : ");
-        foundArticle.title= sc.nextLine();
+        foundArticle.title= Container.sc.nextLine();
         System.out.printf("새 내용 : ");
-        foundArticle.content = sc.nextLine();
+        foundArticle.content = Container.sc.nextLine();
         System.out.println(foundArticle.id+"번 게시물이 수정되었습니다.");
     }
 
@@ -197,13 +199,13 @@ public class Main {
 
     }
 
-    private static void actionUserArticleWrite(Scanner sc) {
+    private static void actionUserArticleWrite() {
         System.out.println("==게시물 등록==");
         System.out.printf("제목 : ");
-        String title = sc.nextLine();
+        String title = Container.sc.nextLine();
 
         System.out.printf("내용 : ");
-        String content =sc.nextLine();
+        String content =Container.sc.nextLine();
 
         int id = articleLastId+1;
         articleLastId++;
