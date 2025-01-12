@@ -39,70 +39,180 @@ public class Main {
             System.out.printf("입력 된 명령어 : %s\n", cmd);
 
             if (rq.getUrlPath().equals("/user/article/write")) {
-                System.out.println("==게시물 등록==");
-                System.out.printf("제목 : ");
-                String title = sc.nextLine();
 
-                System.out.printf("내용 : ");
-                String content =sc.nextLine();
-
-                int id = articleLastId+1;
+                actionUserArticleWrite(sc,articleList,articleLastId);
                 articleLastId++;
 
-                Article article = new Article(id,title,content);
-                articleList.add(article);
-                lastArticle = article;
+            }
+            else if (rq.getUrlPath().equals("/user/article/list")) {
 
-                System.out.println(id+"번 게시물이 등록되었습니다.\n");
-                System.out.println("생성된 게시물 객체 : "+article);
-
-            } else if (rq.getUrlPath().equals("/user/article/list")) {
+                actionUserArticleList(rq,articleList);
 
 
-                System.out.println("== 게시물 리스트 ==");
-                System.out.println("----------------");
-                System.out.println("번호 / 제목");
-                System.out.println("----------------");
+            }
+            else if (rq.getUrlPath().equals("/user/article/detail")) {
 
-                List<Article> filteredArticles= articleList;
+              actionUserArticleDetail(rq,articleList);
 
-                String searchKeywordIndex = "searchKeyword";
-                if(params.containsKey(searchKeywordIndex))
+            }
+            else if(rq.getUrlPath().equals("/user/article/modify"))
+            {
+                actionUserArticleModify(sc,rq,articleList);
+            }
+            else if (rq.getUrlPath().equals("exit")) {
+                System.out.println("프로그램을 종료합니다.");
+                break;
+            }
+            else {
+                System.out.println("명령어를 잘못 입력하셨습니다.");
+            }
+        }
+
+        System.out.println("== 프로그램 종료 ==");
+        sc.close(); // Scanner 사용했으면 필수.
+
+    }
+
+    private static void actionUserArticleModify(Scanner sc, Rq rq, List<Article> articleList) {
+        Map<String,String> params = rq.getParams();
+
+        if(params.containsKey("id")==false)
+        {
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
+
+
+        int id =0;
+
+        try {
+
+            id = Integer.parseInt(params.get("id"));
+        }
+        catch (NumberFormatException e){
+            System.out.println("id를 정수 형태로 입력해주세요.");
+            return;
+        }
+
+        if(articleList.isEmpty()||id>articleList.size())
+        {
+            System.out.println("게시물이 존재하지 않습니다");
+            return;
+        }
+
+        Article article = articleList.get(id-1);
+
+        System.out.printf("새 제목 : ");
+        article.title= sc.nextLine();
+        System.out.printf("새 내용 : ");
+        article.content = sc.nextLine();
+
+        System.out.printf(article.id+"번 게시물이 수정되었습니다.");
+
+
+    }
+
+    private static void actionUserArticleDetail(Rq rq, List<Article> articleList) {
+        Map<String,String> params = rq.getParams();
+
+        if(params.containsKey("id")==false)
+        {
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
+
+
+        int id =0;
+
+        try {
+
+            id = Integer.parseInt(params.get("id"));
+        }
+        catch (NumberFormatException e){
+            System.out.println("id를 정수 형태로 입력해주세요.");
+            return;
+        }
+
+        if(articleList.isEmpty()||id>articleList.size())
+        {
+            System.out.println("게시물이 존재하지 않습니다");
+            return;
+        }
+
+        Article article = articleList.get(id-1);
+
+        System.out.println(article);
+
+    }
+
+    private static void actionUserArticleWrite(Scanner sc, List<Article> articleList, int articleLastId) {
+        System.out.println("==게시물 등록==");
+        System.out.printf("제목 : ");
+        String title = sc.nextLine();
+
+        System.out.printf("내용 : ");
+        String content =sc.nextLine();
+
+        int id = articleLastId+1;
+        articleLastId++;
+
+        Article article = new Article(id,title,content);
+        articleList.add(article);
+
+        System.out.println(id+"번 게시물이 등록되었습니다.\n");
+        System.out.println("생성된 게시물 객체 : "+article);
+
+
+    }
+
+    private static void actionUserArticleList(Rq rq, List<Article> articleList) {
+
+        System.out.println("== 게시물 리스트 ==");
+        System.out.println("----------------");
+        System.out.println("번호 / 제목");
+        System.out.println("----------------");
+
+        Map<String,String> params = rq.getParams();
+
+        List<Article> filteredArticles= articleList;
+
+        String searchKeywordIndex = "searchKeyword";
+        if(params.containsKey(searchKeywordIndex))
+        {
+            String searchKeyword = params.get(searchKeywordIndex);
+            filteredArticles= new ArrayList<>();
+
+            for(Article article : articleList)
+            {
+                System.out.println(articleList.size());
+                System.out.println(article);
+                boolean matched = article.title.contains(searchKeyword)||article.content.contains(searchKeyword);
+
+                if(matched)
                 {
-                    String searchKeyword = params.get(searchKeywordIndex);
-                    filteredArticles= new ArrayList<>();
-
-                    for(Article article : articleList)
-                    {
-                        System.out.println(articleList.size());
-                        System.out.println(article);
-                        boolean matched = article.title.contains(searchKeyword)||article.content.contains(searchKeyword);
-
-                        if(matched)
-                        {
-                            filteredArticles.add(article);
-                        }
-                    }
+                    filteredArticles.add(article);
                 }
+            }
+        }
 
-                List<Article> sortedArticles = filteredArticles;
+        List<Article> sortedArticles = filteredArticles;
 
-                boolean orderByIdDesc = true;
+        boolean orderByIdDesc = true;
 
-                if(params.containsKey("orderBy")&&params.get("orderBy").equals("idAsc"))
-                {
-                    orderByIdDesc =false;
-                    //Collections.reverse(articleList);
-                }
-                if(orderByIdDesc)
-                {
-                    sortedArticles = Util.reverseList(filteredArticles);
-                }
+        if(params.containsKey("orderBy")&&params.get("orderBy").equals("idAsc"))
+        {
+            orderByIdDesc =false;
+            //Collections.reverse(articleList);
+        }
+        if(orderByIdDesc)
+        {
+            sortedArticles = Util.reverseList(filteredArticles);
+        }
 
-                for(Article article : sortedArticles)
-                {
-                    System.out.println(article);
-                }
+        for(Article article : sortedArticles)
+        {
+            System.out.println(article);
+        }
 //                for(Article article: articleList)
 //                {
 //                    System.out.printf("%d / %s\n",article.id,article.title);
@@ -115,55 +225,6 @@ public class Main {
 //                }
 
 
-            } else if (rq.getUrlPath().equals("/user/article/detail")) {
-
-                if(params.containsKey("id")==false)
-                {
-                    System.out.println("id를 입력해주세요.");
-                    continue;
-                }
-
-
-                int id =0;
-
-                try {
-
-                    id = Integer.parseInt(params.get("id"));
-                }
-                catch (NumberFormatException e){
-                    System.out.println("id를 정수 형태로 입력해주세요.");
-                    continue;
-                }
-
-                if(articleList.isEmpty())
-                {
-                    System.out.println("게시물이 존재하지 않습니다");
-                    continue;
-                }
-
-
-                if(id>articleList.size())
-                {
-                    System.out.println("해당 게시물은 존재하지 않습니다");
-                    continue;
-                }
-
-                Article article = articleList.get(id-1);
-
-                System.out.println(article);
-
-
-            } else if (rq.getUrlPath().equals("exit")) {
-                System.out.println("프로그램을 종료합니다.");
-                break;
-            }
-            else {
-                System.out.println("명령어를 잘못 입력하셨습니다.");
-            }
-        }
-
-        System.out.println("== 프로그램 종료 ==");
-        sc.close(); // Scanner 사용했으면 필수.
 
     }
 
