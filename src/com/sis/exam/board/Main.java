@@ -5,14 +5,17 @@ import java.util.*;
 
 public class Main {
 
+    static int articleLastId =0;
+    static List<Article> articleList =  new ArrayList<>();
+
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        int articleLastId =0;
+
 
         Article lastArticle = null;
-        List<Article> articleList =  new ArrayList<>();
-        addTestcase(articleList);
+        addTestcase();
 
         if(!articleList.isEmpty())
         {
@@ -35,24 +38,24 @@ public class Main {
 
             if (rq.getUrlPath().equals("/user/article/write"))
             {
-                actionUserArticleWrite(sc,articleList,articleLastId);
+                actionUserArticleWrite(sc);
                 articleLastId++;
             }
             else if (rq.getUrlPath().equals("/user/article/list"))
             {
-                actionUserArticleList(rq,articleList);
+                actionUserArticleList(rq);
             }
             else if (rq.getUrlPath().equals("/user/article/detail"))
             {
-              actionUserArticleDetail(rq,articleList);
+              actionUserArticleDetail(rq);
             }
             else if(rq.getUrlPath().equals("/user/article/modify"))
             {
-                actionUserArticleModify(sc,rq,articleList);
+                actionUserArticleModify(sc,rq);
             }
             else if(rq.getUrlPath().equals("/user/article/delete"))
             {
-                actionUserArticleDelete(sc,rq,articleList);
+                actionUserArticleDelete(sc,rq);
             }
             else if (rq.getUrlPath().equals("exit"))
             {
@@ -70,7 +73,7 @@ public class Main {
 
     }
 
-    private static void actionUserArticleDelete(Scanner sc, Rq rq, List<Article> articleList) {
+    private static void actionUserArticleDelete(Scanner sc, Rq rq) {
         Map<String,String> params = rq.getParams();
         if(params.containsKey("id")==false)
         {
@@ -111,7 +114,7 @@ public class Main {
         System.out.printf(id+"번 게시물이 삭제되었습니다.");
     }
 
-    private static void actionUserArticleModify(Scanner sc, Rq rq, List<Article> articleList) {
+    private static void actionUserArticleModify(Scanner sc, Rq rq) {
         Map<String,String> params = rq.getParams();
         if(params.containsKey("id")==false)
         {
@@ -153,7 +156,7 @@ public class Main {
         System.out.println(foundArticle.id+"번 게시물이 수정되었습니다.");
     }
 
-    private static void actionUserArticleDetail(Rq rq, List<Article> articleList) {
+    private static void actionUserArticleDetail(Rq rq) {
         Map<String,String> params = rq.getParams();
         if(params.containsKey("id")==false)
         {
@@ -194,7 +197,7 @@ public class Main {
 
     }
 
-    private static void actionUserArticleWrite(Scanner sc, List<Article> articleList, int articleLastId) {
+    private static void actionUserArticleWrite(Scanner sc) {
         System.out.println("==게시물 등록==");
         System.out.printf("제목 : ");
         String title = sc.nextLine();
@@ -214,7 +217,7 @@ public class Main {
 
     }
 
-    private static void actionUserArticleList(Rq rq, List<Article> articleList) {
+    private static void actionUserArticleList(Rq rq) {
 
         System.out.println("== 게시물 리스트 ==");
         System.out.println("----------------");
@@ -277,7 +280,7 @@ public class Main {
 
     }
 
-    private static void addTestcase(List<Article> articleList) {
+    private static void addTestcase() {
 
         for(int i=0;i<100;i++)
         {
