@@ -7,9 +7,14 @@ import java.util.*;
 
 public class Main {
 
-    static int articleLastId =0;
-    static List<Article> articleList =  new ArrayList<>();
+    static int articleLastId ;
+    static List<Article> articleList ;
 
+
+    static{
+        articleLastId =0;
+        articleList = new ArrayList<>();
+    }
 
     public static void main(String[] args) {
 
