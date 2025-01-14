@@ -1,9 +1,9 @@
 package com.sis.exam.board;
 
 public class Article {
-    int id ;
-    String title ;
-    String content ;
+   public int id ;
+   public String title ;
+   public String content ;
 
 
     public Article(int id, String title, String content) {
