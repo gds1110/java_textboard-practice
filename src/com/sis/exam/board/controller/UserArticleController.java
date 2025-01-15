@@ -65,14 +65,12 @@ public  class UserArticleController {
         System.out.println("번호 / 제목");
         System.out.println("----------------");
 
-        Map<String,String> params = rq.getParams();
+        String searchKeyword = rq.getParam("searchKeyword","");
 
         List<Article> filteredArticles= articleList;
 
-        String searchKeywordIndex = "searchKeyword";
-        if(params.containsKey(searchKeywordIndex))
+        if(searchKeyword.length()>0)
         {
-            String searchKeyword = params.get(searchKeywordIndex);
             filteredArticles= new ArrayList<>();
 
             for(Article article : articleList)
@@ -90,13 +88,10 @@ public  class UserArticleController {
 
         List<Article> sortedArticles = filteredArticles;
 
-        boolean orderByIdDesc = true;
+        String orderBy = rq.getParam("orderBy","idDesc");
+        boolean orderByIdDesc = orderBy.equals("idDesc");
 
-        if(params.containsKey("orderBy")&&params.get("orderBy").equals("idAsc"))
-        {
-            orderByIdDesc =false;
-            //Collections.reverse(articleList);
-        }
+
         if(orderByIdDesc)
         {
             sortedArticles = Util.reverseList(filteredArticles);
@@ -161,19 +156,12 @@ public  class UserArticleController {
     }
 
     public void actionModify(Rq rq) {
-        Map<String,String> params = rq.getParams();
-        if(params.containsKey("id")==false)
-        {
-            System.out.println("id를 입력해주세요.");
-            return;
-        }
-        int id =0;
-        try {
+        int id = rq.getIntParam("id",0);
 
-            id = Integer.parseInt(params.get("id"));
-        }
-        catch (NumberFormatException e){
-            System.out.println("id를 정수 형태로 입력해주세요.");
+        if(id==0)
+        {
+            System.out.println("아이디를 올바르게 입력해주세요.");
+
             return;
         }
         if(articleList.isEmpty()||id>articleList.size())
@@ -203,20 +191,14 @@ public  class UserArticleController {
     }
 
     public void actionDelete(Rq rq) {
-        Map<String,String> params = rq.getParams();
-        if(params.containsKey("id")==false)
-        {
-            System.out.println("id를 입력해주세요.");
+     int id = rq.getIntParam("id",0);
+
+     if(id==0)
+     {
+         System.out.println("아이디를 올바르게 입력해주세요.");
+
             return;
-        }
-        int id =0;
-        try {
-            id = Integer.parseInt(params.get("id"));
-        }
-        catch (NumberFormatException e){
-            System.out.println("id를 정수 형태로 입력해주세요.");
-            return;
-        }
+     }
 
         if(articleList.isEmpty()||id>articleList.size())
         {
