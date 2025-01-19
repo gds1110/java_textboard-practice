@@ -69,4 +69,57 @@ public class UserMemberController {
 
 
     }
+
+    public void actionLogin(Rq rq)
+    {
+        System.out.println("==로그인==");
+        System.out.printf("로그인 아이디 : ");
+
+        String loginId = Container.sc.nextLine();
+
+
+        if(loginId.trim().length()==0)
+        {
+            System.out.println("로그인 아이디를 입력해주세요.");
+            return;
+        }
+
+        Member member = getMemberLoginID(loginId);
+
+        if(member==null)
+        {
+            System.out.println("해당 아이디는 존재하지 않습니다.");
+            return;
+        }
+
+        System.out.printf("로그인 패스워드 : ");
+        String loginPw =Container.sc.nextLine();
+        if(loginPw.trim().length()==0)
+        {
+            System.out.println("로그인 패스워드를 입력해주세요.");
+            return;
+        }
+
+        if(member.loginPw.equals(loginPw)==false)
+        {
+            System.out.println("로그인 패스워드가 일치하지 않습니다.");
+            return;
+        }
+
+
+        System.out.printf("\"%s\"님 환영합니다. \n",member.name);
+    }
+
+    private Member getMemberLoginID(String loginId) {
+
+        for(Member member : memberList)
+        {
+            if(member.loginId.equals(loginId))
+            {
+                return member;
+            }
+        }
+
+        return null;
+    }
 }

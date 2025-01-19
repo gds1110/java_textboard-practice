@@ -135,25 +135,17 @@ public  class UserArticleController {
             System.out.println("게시물이 존재하지 않습니다");
             return;
         }
-        Article foundArticle = null;
+        Article article = getArticleById(id);
 
-        for(Article article : articleList)
-        {
-            if(article.id == id)
-            {
-                foundArticle = article;
-                break;
-            }
-        }
-
-        if(foundArticle==null)
+        if(article==null)
         {
             System.out.println("해당 게시물은 존재하지않습니다.");
             return;
         }
 
-        System.out.println(foundArticle);
+        System.out.println(article);
     }
+
 
     public void actionModify(Rq rq) {
         int id = rq.getIntParam("id",0);
@@ -169,25 +161,18 @@ public  class UserArticleController {
             System.out.println("게시물이 존재하지 않습니다");
             return;
         }
-        Article foundArticle = null;
-        for(Article article : articleList)
-        {
-            if(article.id == id)
-            {
-                foundArticle = article;
-                break;
-            }
-        }
-        if(foundArticle==null)
+        Article article = getArticleById(id);
+
+        if(article==null)
         {
             System.out.println("해당 게시물은 존재하지않습니다.");
             return;
         }
         System.out.printf("새 제목 : ");
-        foundArticle.title= Container.sc.nextLine();
+        article.title= Container.sc.nextLine();
         System.out.printf("새 내용 : ");
-        foundArticle.content = Container.sc.nextLine();
-        System.out.println(foundArticle.id+"번 게시물이 수정되었습니다.");
+        article.content = Container.sc.nextLine();
+        System.out.println(article.id+"번 게시물이 수정되었습니다.");
     }
 
     public void actionDelete(Rq rq) {
@@ -206,22 +191,25 @@ public  class UserArticleController {
             return;
         }
 
-        Article foundArticle = null;
+        Article article = getArticleById(id);
 
-        for(Article article : articleList)
-        {
-            if(article.id == id)
-            {
-                foundArticle = article;
-                break;
-            }
-        }
-        if(foundArticle==null)
+        if(article==null)
         {
             System.out.println("해당 게시물은 존재하지않습니다.");
             return;
         }
-        articleList.remove(foundArticle);
+        articleList.remove(article);
         System.out.printf(id+"번 게시물이 삭제되었습니다.");
+    }
+    private Article getArticleById(int id) {
+        for(Article article:articleList)
+        {
+            if(article.id==id)
+            {
+                return article;
+            }
+        }
+
+        return null;
     }
 }
