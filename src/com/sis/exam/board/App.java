@@ -10,6 +10,7 @@ public class App {
     public  void run() {
 
         Scanner sc = Container.sc;
+        Session session = Container.getSession();
 
 
         Article lastArticle = null;
@@ -19,7 +20,18 @@ public class App {
         System.out.println("== 프로그램 시작 ==");
 
         while (true) {
-            System.out.printf("명령) ");
+            Member loginMember = (Member) session.getAttribute("loginedMember");
+
+            String promptName = "명령) ";
+
+            if(loginMember !=null)
+            {
+                promptName =loginMember.name;
+            }
+
+
+
+            System.out.printf("%s) ",promptName);
             String cmd = sc.nextLine();
 
             Rq rq = new Rq(cmd);

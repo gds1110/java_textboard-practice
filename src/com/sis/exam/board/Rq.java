@@ -1,5 +1,7 @@
 package com.sis.exam.board;
 
+import com.sis.exam.board.container.Container;
+
 import java.util.Map;
 
 public class Rq {
@@ -51,6 +53,13 @@ public class Rq {
         }
 
 
+
+    }
+
+    public void setSessionAttr(String key, Member value) {
+
+       Session session = Container.getSession();
+       session.setAttribute(key,value);
 
     }
 }
