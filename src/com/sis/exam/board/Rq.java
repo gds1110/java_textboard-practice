@@ -56,6 +56,19 @@ public class Rq {
 
     }
 
+    public boolean hasSessionAttr(String key)
+    {
+        Session session = Container.getSession();
+        return session.hasAttribute(key);
+    }
+
+    public void removeSessionAttr(String key)
+    {
+        Session session = Container.getSession();
+        session.removeAttribute(key);
+    }
+
+
     public void setSessionAttr(String key, Member value) {
 
        Session session = Container.getSession();

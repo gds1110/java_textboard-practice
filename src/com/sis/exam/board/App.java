@@ -71,6 +71,11 @@ public class App {
 
                 Container.userMemberController.actionLogin(rq);
             }
+            else if(rq.getUrlPath().equals("/user/member/logout"))
+            {
+
+                Container.userMemberController.actionLogout(rq);
+            }
             else if (rq.getUrlPath().equals("exit"))
             {
                 System.out.println("프로그램을 종료합니다.");
