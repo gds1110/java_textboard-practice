@@ -1,4 +1,4 @@
-package com.sis.exam.board;
+package com.sis.exam.board.utill;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Util {
-    static Map<String,String> getParamsFromUrl(String url){
+    public static Map<String,String> getParamsFromUrl(String url){
         System.out.println("getParamsFromUrl 실행됨");
         Map<String,String> params = new HashMap<>();
 

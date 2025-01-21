@@ -1,4 +1,4 @@
-package com.sis.exam.board;
+package com.sis.exam.board.session;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,8 @@
 package com.sis.exam.board.controller;
 
-import com.sis.exam.board.Article;
-import com.sis.exam.board.Rq;
-import com.sis.exam.board.Util;
+import com.sis.exam.board.vo.Article;
+import com.sis.exam.board.vo.Rq;
+import com.sis.exam.board.utill.Util;
 import com.sis.exam.board.container.Container;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public  class UserArticleController {
 
         if(articleList.size()>0)
         {
-            articleLastId = articleList.get(articleList.size()-1).id;
+            articleLastId = articleList.get(articleList.size()-1).getId();
         }
 
     }
@@ -42,10 +42,10 @@ public  class UserArticleController {
     public void actionWrite(Rq rq) {
         System.out.println("==게시물 등록==");
         System.out.printf("제목 : ");
-        String title = Container.sc.nextLine();
+        String title = Container.getSc().nextLine();
 
         System.out.printf("내용 : ");
-        String content =Container.sc.nextLine();
+        String content =Container.getSc().nextLine();
 
         int id = articleLastId+1;
         articleLastId++;
@@ -77,7 +77,7 @@ public  class UserArticleController {
             {
                 System.out.println(articleList.size());
                 System.out.println(article);
-                boolean matched = article.title.contains(searchKeyword)||article.content.contains(searchKeyword);
+                boolean matched = article.getTitle().contains(searchKeyword)||article.getContent().contains(searchKeyword);
 
                 if(matched)
                 {
@@ -169,10 +169,10 @@ public  class UserArticleController {
             return;
         }
         System.out.printf("새 제목 : ");
-        article.title= Container.sc.nextLine();
+        article.setTitle(Container.getSc().nextLine());
         System.out.printf("새 내용 : ");
-        article.content = Container.sc.nextLine();
-        System.out.println(article.id+"번 게시물이 수정되었습니다.");
+        article.setContent(Container.getSc().nextLine());
+        System.out.println(article.getId()+"번 게시물이 수정되었습니다.");
     }
 
     public void actionDelete(Rq rq) {
@@ -204,7 +204,7 @@ public  class UserArticleController {
     private Article getArticleById(int id) {
         for(Article article:articleList)
         {
-            if(article.id==id)
+            if(article.getId()==id)
             {
                 return article;
             }

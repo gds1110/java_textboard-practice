@@ -1,8 +1,7 @@
 package com.sis.exam.board.controller;
 
-import com.sis.exam.board.Article;
-import com.sis.exam.board.Member;
-import com.sis.exam.board.Rq;
+import com.sis.exam.board.vo.Member;
+import com.sis.exam.board.vo.Rq;
 import com.sis.exam.board.container.Container;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class UserMemberController {
         
         if(memberList.size()>0)
         {
-            memberLastId = memberList.get(memberList.size()-1).id;
+            memberLastId = memberList.get(memberList.size()-1).getId();
         }
 
     }
@@ -39,13 +38,13 @@ public class UserMemberController {
     public void actionJoin(Rq rq) {
         System.out.println("==회원 가입==");
         System.out.printf("로그인 아이디 : ");
-        String loginId = Container.sc.nextLine();
+        String loginId = Container.getSc().nextLine();
 
         System.out.printf("로그인 패스워드 : ");
-        String loginPw =Container.sc.nextLine();
+        String loginPw =Container.getSc().nextLine();
 
         System.out.printf("로그인 패스워드 확인 : ");
-        String loginPwConfirm =Container.sc.nextLine();
+        String loginPwConfirm =Container.getSc().nextLine();
 
         if(loginPw.equals(loginPwConfirm)==false)
         {
@@ -55,7 +54,7 @@ public class UserMemberController {
         }
 
         System.out.printf("이름 : ");
-        String name = Container.sc.nextLine();
+        String name = Container.getSc().nextLine();
 
 
         int id = ++memberLastId;
@@ -64,7 +63,7 @@ public class UserMemberController {
         Member member = new Member(id,loginId,loginPw,name);
         memberList.add(member);
 
-        System.out.printf("\"%s\"님 회원 가입을 환영합니다..\n",member.name);
+        System.out.printf("\"%s\"님 회원 가입을 환영합니다..\n",member.getName());
 
 
 
@@ -83,7 +82,7 @@ public class UserMemberController {
         System.out.println("==로그인==");
         System.out.printf("로그인 아이디 : ");
 
-        String loginId = Container.sc.nextLine();
+        String loginId = Container.getSc().nextLine();
 
 
         if(loginId.trim().length()==0)
@@ -101,14 +100,14 @@ public class UserMemberController {
         }
 
         System.out.printf("로그인 패스워드 : ");
-        String loginPw =Container.sc.nextLine();
+        String loginPw =Container.getSc().nextLine();
         if(loginPw.trim().length()==0)
         {
             System.out.println("로그인 패스워드를 입력해주세요.");
             return;
         }
 
-        if(member.loginPw.equals(loginPw)==false)
+        if(member.getLoginPw().equals(loginPw)==false)
         {
             System.out.println("로그인 패스워드가 일치하지 않습니다.");
             return;
@@ -116,14 +115,14 @@ public class UserMemberController {
 
         rq.setSessionAttr("loginedMember",member);
 
-        System.out.printf("\"%s\"님 환영합니다. \n",member.name);
+        System.out.printf("\"%s\"님 환영합니다. \n",member.getName());
     }
 
     private Member getMemberLoginID(String loginId) {
 
         for(Member member : memberList)
         {
-            if(member.loginId.equals(loginId))
+            if(member.getLoginId().equals(loginId))
             {
                 return member;
             }

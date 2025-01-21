@@ -1,10 +1,10 @@
-package com.sis.exam.board;
+package com.sis.exam.board.vo;
 
 public class Member {
-   public int id ;
-   public String loginId ;
-   public String loginPw ;
-   public String name ;
+   private int id ;
+   private String loginId ;
+   private String loginPw ;
+   private String name ;
 
 
     public Member(int id, String loginId, String loginPw, String name) {
@@ -22,5 +22,21 @@ public class Member {
                 ", loginPw='" + loginPw + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLoginPw() {
+        return loginPw;
+    }
+
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public int getId() {
+        return id;
     }
 }

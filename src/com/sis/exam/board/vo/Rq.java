@@ -1,14 +1,16 @@
-package com.sis.exam.board;
+package com.sis.exam.board.vo;
 
+import com.sis.exam.board.utill.Util;
 import com.sis.exam.board.container.Container;
+import com.sis.exam.board.session.Session;
 
 import java.util.Map;
 
 public class Rq {
-    String url;
+   public String url;
 
-    Map<String,String> params;
-    String urlPath;
+   public Map<String,String> params;
+   public String urlPath;
 
     public Rq(String url) {
         this.url = url;

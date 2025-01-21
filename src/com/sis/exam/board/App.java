@@ -1,15 +1,18 @@
 package com.sis.exam.board;
 
 import com.sis.exam.board.container.Container;
+import com.sis.exam.board.session.Session;
+import com.sis.exam.board.vo.Article;
+import com.sis.exam.board.vo.Member;
+import com.sis.exam.board.vo.Rq;
 
-import java.util.Map;
 import java.util.Scanner;
 
 public class App {
 
     public  void run() {
 
-        Scanner sc = Container.sc;
+        Scanner sc = Container.getSc();
         Session session = Container.getSession();
 
 
@@ -26,7 +29,7 @@ public class App {
 
             if(loginMember !=null)
             {
-                promptName =loginMember.name;
+                promptName =loginMember.getName();
             }
 
 
