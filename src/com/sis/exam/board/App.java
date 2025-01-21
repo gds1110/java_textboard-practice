@@ -13,7 +13,6 @@ public class App {
     public  void run() {
 
         Scanner sc = Container.getSc();
-        Session session = Container.getSession();
 
 
         Article lastArticle = null;
@@ -23,13 +22,17 @@ public class App {
         System.out.println("== 프로그램 시작 ==");
 
         while (true) {
-            Member loginMember = (Member) session.getAttribute("loginedMember");
+
+
+            Rq rq = new Rq();
 
             String promptName = "명령) ";
 
-            if(loginMember !=null)
+            if(rq.isLogined())
             {
-                promptName =loginMember.getName();
+                Member loginedMember = rq.getLoginedMember();
+                promptName = loginedMember.getLoginId();
+
             }
 
 
@@ -37,7 +40,7 @@ public class App {
             System.out.printf("%s) ",promptName);
             String cmd = sc.nextLine();
 
-            Rq rq = new Rq(cmd);
+            rq.setCommand(cmd);
 
             System.out.printf("입력 된 명령어 : %s\n", cmd);
 

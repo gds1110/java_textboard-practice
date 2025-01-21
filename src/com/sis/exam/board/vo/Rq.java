@@ -4,6 +4,7 @@ import com.sis.exam.board.utill.Util;
 import com.sis.exam.board.container.Container;
 import com.sis.exam.board.session.Session;
 
+import java.nio.channels.SeekableByteChannel;
 import java.util.Map;
 
 public class Rq {
@@ -12,11 +13,18 @@ public class Rq {
    public Map<String,String> params;
    public String urlPath;
 
-    public Rq(String url) {
-        this.url = url;
-        params = Util.getParamsFromUrl(url);
-        urlPath = Util.getUrlPathFromUrl(url);
-    }
+   public Rq()
+   {
+
+   }
+
+   public Rq(String url)
+   {
+       this.url = url;
+       params = Util.getParamsFromUrl(url);
+       urlPath = Util.getUrlPathFromUrl(url);
+   }
+
 
     public Map<String, String> getParams() {
         return params;
@@ -69,6 +77,12 @@ public class Rq {
         Session session = Container.getSession();
         session.removeAttribute(key);
     }
+    public Object getSessionAttr(String key)
+    {
+        Session session = Container.getSession();
+        return session.getAttribute(key);
+    }
+
 
 
     public void setSessionAttr(String key, Member value) {
@@ -77,4 +91,31 @@ public class Rq {
        session.setAttribute(key,value);
 
     }
+
+    public Member getLoginedMember()
+    {
+        return  (Member) getSessionAttr("loginedMember");
+    }
+
+    public boolean isLogined()
+    {
+        return hasSessionAttr("loginedMember");
+    }
+
+
+    public void login(Member member) {
+       setSessionAttr("loginedMember",member);
+    }
+    public void logout()
+    {
+        removeSessionAttr("loginedMember");
+    }
+
+    public void setCommand(String url) {
+
+        params = Util.getParamsFromUrl(url);
+        urlPath = Util.getUrlPathFromUrl(url);
+
+   }
+
 }
