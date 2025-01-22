@@ -1,5 +1,6 @@
 package com.sis.exam.board.controller;
 
+import com.sis.exam.board.service.ArticleService;
 import com.sis.exam.board.vo.Article;
 import com.sis.exam.board.vo.Rq;
 import com.sis.exam.board.utill.Util;
@@ -11,32 +12,20 @@ import java.util.Map;
 
 public  class UserArticleController {
 
-    int articleLastId ;
-    List<Article> articleList ;
+    private ArticleService articleService;
+    private List<Article> articleList;
 
 
     public UserArticleController(){
-        articleLastId =0;
-        articleList = new ArrayList<>();
 
-        addTestcase();
+        articleService = Container.getArticleService();
 
-        if(articleList.size()>0)
-        {
-            articleLastId = articleList.get(articleList.size()-1).getId();
-        }
+        articleList = articleService.getArticleList();
+
+        articleService.addTestcase();
 
     }
 
-
-    private  void addTestcase() {
-
-        for(int i=0;i<100;i++)
-        {
-            articleList.add(new Article(i,"제목"+i,"내용"+i));
-        }
-
-    }
 
 
     public void actionWrite(Rq rq) {
@@ -47,8 +36,7 @@ public  class UserArticleController {
         System.out.printf("내용 : ");
         String content =Container.getSc().nextLine();
 
-        int id = articleLastId+1;
-        articleLastId++;
+        int id = articleService.write(title,content);
 
         Article article = new Article(id,title,content);
         articleList.add(article);
@@ -67,7 +55,7 @@ public  class UserArticleController {
 
         String searchKeyword = rq.getParam("searchKeyword","");
 
-        List<Article> filteredArticles= articleList;
+        List<Article> filteredArticles= articleService.getArticleList();
 
         if(searchKeyword.length()>0)
         {
@@ -135,7 +123,7 @@ public  class UserArticleController {
             System.out.println("게시물이 존재하지 않습니다");
             return;
         }
-        Article article = getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
         if(article==null)
         {
@@ -161,7 +149,7 @@ public  class UserArticleController {
             System.out.println("게시물이 존재하지 않습니다");
             return;
         }
-        Article article = getArticleById(id);
+        Article article = articleService.getArticleById(id);
 
         if(article==null)
         {
@@ -191,14 +179,15 @@ public  class UserArticleController {
             return;
         }
 
-        Article article = getArticleById(id);
+        Article article = articleService.getArticleById(id);
+
 
         if(article==null)
         {
             System.out.println("해당 게시물은 존재하지않습니다.");
             return;
         }
-        articleList.remove(article);
+        articleService.remove(article);
         System.out.printf(id+"번 게시물이 삭제되었습니다.");
     }
     private Article getArticleById(int id) {
