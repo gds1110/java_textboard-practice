@@ -60,7 +60,6 @@ public  class UserArticleController {
 
     public void showDetail(Rq rq) {
         Map<String,String> params = rq.getParams();
-        List<Article> articleList = articleService.getArticleList();
         if(params.containsKey("id")==false)
         {
             System.out.println("id를 입력해주세요.");
@@ -75,12 +74,6 @@ public  class UserArticleController {
             return;
         }
 
-
-        if(articleList.isEmpty()||id>articleList.size())
-        {
-            System.out.println("게시물이 존재하지 않습니다");
-            return;
-        }
         Article article = articleService.getArticleById(id);
 
         if(article==null)
@@ -95,7 +88,6 @@ public  class UserArticleController {
 
     public void actionModify(Rq rq) {
         int id = rq.getIntParam("id",0);
-        List<Article> articleList = articleService.getArticleList();
 
         if(id==0)
         {
@@ -103,11 +95,7 @@ public  class UserArticleController {
 
             return;
         }
-        if(articleList.isEmpty()||id>articleList.size())
-        {
-            System.out.println("게시물이 존재하지 않습니다");
-            return;
-        }
+
         Article article = articleService.getArticleById(id);
 
         if(article==null)
@@ -124,7 +112,6 @@ public  class UserArticleController {
 
     public void actionDelete(Rq rq) {
      int id = rq.getIntParam("id",0);
-        List<Article> articleList = articleService.getArticleList();
 
      if(id==0)
      {
@@ -132,12 +119,6 @@ public  class UserArticleController {
 
             return;
      }
-
-        if(articleList.isEmpty()||id>articleList.size())
-        {
-            System.out.println("게시물이 존재하지 않습니다");
-            return;
-        }
 
         Article article = articleService.getArticleById(id);
 
