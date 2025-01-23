@@ -13,15 +13,11 @@ import java.util.Map;
 public  class UserArticleController {
 
     private ArticleService articleService;
-    private List<Article> articleList;
 
 
     public UserArticleController(){
 
         articleService = Container.getArticleService();
-
-        articleList = articleService.getArticleList();
-
         articleService.addTestcase();
 
     }
@@ -38,11 +34,8 @@ public  class UserArticleController {
 
         int id = articleService.write(title,content);
 
-        Article article = new Article(id,title,content);
-        articleList.add(article);
-
         System.out.println(id+"번 게시물이 등록되었습니다.\n");
-        System.out.println("생성된 게시물 객체 : "+article);
+        System.out.println("생성된 게시물 객체 : "+getArticleById(id));
 
     }
 
@@ -54,63 +47,26 @@ public  class UserArticleController {
         System.out.println("----------------");
 
         String searchKeyword = rq.getParam("searchKeyword","");
-
-        List<Article> filteredArticles= articleService.getArticleList();
-
-        if(searchKeyword.length()>0)
-        {
-            filteredArticles= new ArrayList<>();
-
-            for(Article article : articleList)
-            {
-                System.out.println(articleList.size());
-                System.out.println(article);
-                boolean matched = article.getTitle().contains(searchKeyword)||article.getContent().contains(searchKeyword);
-
-                if(matched)
-                {
-                    filteredArticles.add(article);
-                }
-            }
-        }
-
-        List<Article> sortedArticles = filteredArticles;
-
         String orderBy = rq.getParam("orderBy","idDesc");
-        boolean orderByIdDesc = orderBy.equals("idDesc");
 
 
-        if(orderByIdDesc)
-        {
-            sortedArticles = Util.reverseList(filteredArticles);
-        }
+        List<Article> articles= articleService.getArticleList(searchKeyword,orderBy);
 
-        for(Article article : sortedArticles)
-        {
-            System.out.println(article);
-        }
-//                for(Article article: articleList)
-//                {
-//                    System.out.printf("%d / %s\n",article.id,article.title);
-//                }
-//
-//                for(int i=articleList.size()-1;i>=0;i--)
-//                {
-//                    Article article =articleList.get(i);
-//                    System.out.println(article);
-//                }
 
+        articles.stream()
+                .forEach(article -> System.out.printf("%d / %s\n",article.getId(),article.getTitle()));
 
     }
 
     public void showDetail(Rq rq) {
         Map<String,String> params = rq.getParams();
+        List<Article> articleList = articleService.getArticleList();
         if(params.containsKey("id")==false)
         {
             System.out.println("id를 입력해주세요.");
             return;
         }
-        int id =0;
+        int id =rq.getIntParam("id",0);
         try {
             id = Integer.parseInt(params.get("id"));
         }
@@ -118,6 +74,8 @@ public  class UserArticleController {
             System.out.println("id를 정수 형태로 입력해주세요.");
             return;
         }
+
+
         if(articleList.isEmpty()||id>articleList.size())
         {
             System.out.println("게시물이 존재하지 않습니다");
@@ -137,6 +95,7 @@ public  class UserArticleController {
 
     public void actionModify(Rq rq) {
         int id = rq.getIntParam("id",0);
+        List<Article> articleList = articleService.getArticleList();
 
         if(id==0)
         {
@@ -165,6 +124,7 @@ public  class UserArticleController {
 
     public void actionDelete(Rq rq) {
      int id = rq.getIntParam("id",0);
+        List<Article> articleList = articleService.getArticleList();
 
      if(id==0)
      {
@@ -191,6 +151,8 @@ public  class UserArticleController {
         System.out.printf(id+"번 게시물이 삭제되었습니다.");
     }
     private Article getArticleById(int id) {
+        List<Article> articleList = articleService.getArticleList();
+
         for(Article article:articleList)
         {
             if(article.getId()==id)

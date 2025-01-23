@@ -4,7 +4,6 @@ import com.sis.exam.board.Repository.ArticleRepository;
 import com.sis.exam.board.container.Container;
 import com.sis.exam.board.vo.Article;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleService {
@@ -34,7 +33,7 @@ public class ArticleService {
     }
 
     public Article getArticleById(int id) {
-        return  articleRepository.getArticleById(id);
+        return articleRepository.getArticleById(id);
     }
 
     public void remove(Article article) {
@@ -42,7 +41,12 @@ public class ArticleService {
         articleRepository.remove(article);
     }
 
+    public List<Article> getArticleList(String searchKeyword, String orderBy) {
+
+        return  articleRepository.getArticleList(searchKeyword,orderBy);
+    }
+
     public List<Article> getArticleList() {
-        return  articleRepository.getArticleList();
+        return articleRepository.getArticleList();
     }
 }
