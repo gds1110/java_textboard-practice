@@ -104,14 +104,6 @@ public class UserMemberController {
 
 
     public void actionLogout(Rq rq) {
-
-        if(rq.isLogined()==false)
-        {
-            System.out.println("로그아웃 상태입니다.");
-            return;
-        }
-
-
         rq.logout();
         System.out.println("로그아웃 완료");
     }

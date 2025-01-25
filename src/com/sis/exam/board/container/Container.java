@@ -2,6 +2,8 @@ package com.sis.exam.board.container;
 
 import com.sis.exam.board.Repository.ArticleRepository;
 import com.sis.exam.board.Repository.MemberRepository;
+import com.sis.exam.board.interceptor.NeedLoginInterceptor;
+import com.sis.exam.board.interceptor.NeedLogoutInterceptor;
 import com.sis.exam.board.service.ArticleService;
 import com.sis.exam.board.service.MemberService;
 import com.sis.exam.board.session.Session;
@@ -11,14 +13,17 @@ import com.sis.exam.board.controller.UserMemberController;
 import java.util.Scanner;
 
 public class Container {
-    public static Scanner sc;
-    public static Session session;
-    public static ArticleRepository articleRepository;
-    public static ArticleService articleService;
-    public static MemberRepository memberRepository;
-    public static MemberService memberService;
-    public static UserArticleController userArticleController;
-    public static UserMemberController userMemberController;
+    private static Scanner sc;
+    private static Session session;
+
+    private static NeedLoginInterceptor needLoginInterceptor;
+    private static NeedLogoutInterceptor needLogoutInterceptor;
+    private static ArticleRepository articleRepository;
+    private static ArticleService articleService;
+    private static MemberRepository memberRepository;
+    private static MemberService memberService;
+    private static UserArticleController userArticleController;
+    private static UserMemberController userMemberController;
 
 
 
@@ -26,6 +31,8 @@ public class Container {
     {
       sc =   new Scanner(System.in);
       session = new Session();
+        needLoginInterceptor = new NeedLoginInterceptor();
+        needLogoutInterceptor = new NeedLogoutInterceptor();
       articleRepository = new ArticleRepository();
       articleService = new ArticleService();
       memberRepository = new MemberRepository();
@@ -40,6 +47,22 @@ public class Container {
 
     public static Scanner getSc() {
         return sc;
+    }
+
+    public static NeedLoginInterceptor getNeedLoginInterceptor() {
+        return needLoginInterceptor;
+    }
+
+    public static void setNeedLoginInterceptor(NeedLoginInterceptor needLoginInterceptor) {
+        Container.needLoginInterceptor = needLoginInterceptor;
+    }
+
+    public static NeedLogoutInterceptor getNeedLogoutInterceptor() {
+        return needLogoutInterceptor;
+    }
+
+    public static void setNeedLogoutInterceptor(NeedLogoutInterceptor needLogoutInterceptor) {
+        Container.needLogoutInterceptor = needLogoutInterceptor;
     }
 
     public static UserArticleController getUserArticleController() {
