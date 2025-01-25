@@ -1,5 +1,7 @@
 package com.sis.exam.board.controller;
 
+import com.sis.exam.board.service.ArticleService;
+import com.sis.exam.board.service.MemberService;
 import com.sis.exam.board.vo.Member;
 import com.sis.exam.board.vo.Rq;
 import com.sis.exam.board.container.Container;
@@ -9,30 +11,15 @@ import java.util.List;
 
 public class UserMemberController {
 
-    int memberLastId ;
-    List<Member> memberList;
-
+    private MemberService memberService;
 
     public UserMemberController(){
-        memberLastId =0;
-        memberList = new ArrayList<>();
 
-        MakeTestData();
-        
-        if(memberList.size()>0)
-        {
-            memberLastId = memberList.get(memberList.size()-1).getId();
-        }
+        memberService = Container.getMemberService();
 
+        memberService.MakeTestData();
     }
 
-    public void MakeTestData() {
-
-        for(int i=1;i<3;i++)
-        {
-            memberList.add(new Member(i,"user"+i,"user"+i,"홍길동"+i));
-        }
-    }
 
 
     public void actionJoin(Rq rq) {
@@ -57,13 +44,9 @@ public class UserMemberController {
         String name = Container.getSc().nextLine();
 
 
-        int id = ++memberLastId;
+        int id = memberService.join(loginId,loginPw,name);
 
-
-        Member member = new Member(id,loginId,loginPw,name);
-        memberList.add(member);
-
-        System.out.printf("\"%s\"님 회원 가입을 환영합니다..\n",member.getName());
+        System.out.printf("\"%s\"님 회원 가입을 환영합니다..\n",memberService.getMemberById(id).getName());
 
 
 
@@ -92,7 +75,7 @@ public class UserMemberController {
             return;
         }
 
-        Member member = getMemberLoginID(loginId);
+        Member member = memberService.getMemberLoginId(loginId);
 
         if(member==null)
         {
@@ -119,18 +102,6 @@ public class UserMemberController {
         System.out.printf("\"%s\"님 환영합니다. \n",member.getName());
     }
 
-    private Member getMemberLoginID(String loginId) {
-
-        for(Member member : memberList)
-        {
-            if(member.getLoginId().equals(loginId))
-            {
-                return member;
-            }
-        }
-
-        return null;
-    }
 
     public void actionLogout(Rq rq) {
 

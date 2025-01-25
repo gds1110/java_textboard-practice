@@ -1,7 +1,9 @@
 package com.sis.exam.board.container;
 
 import com.sis.exam.board.Repository.ArticleRepository;
+import com.sis.exam.board.Repository.MemberRepository;
 import com.sis.exam.board.service.ArticleService;
+import com.sis.exam.board.service.MemberService;
 import com.sis.exam.board.session.Session;
 import com.sis.exam.board.controller.UserArticleController;
 import com.sis.exam.board.controller.UserMemberController;
@@ -13,6 +15,8 @@ public class Container {
     public static Session session;
     public static ArticleRepository articleRepository;
     public static ArticleService articleService;
+    public static MemberRepository memberRepository;
+    public static MemberService memberService;
     public static UserArticleController userArticleController;
     public static UserMemberController userMemberController;
 
@@ -24,6 +28,8 @@ public class Container {
       session = new Session();
       articleRepository = new ArticleRepository();
       articleService = new ArticleService();
+      memberRepository = new MemberRepository();
+      memberService = new MemberService();
       userArticleController = new UserArticleController();
       userMemberController = new UserMemberController();
     }
@@ -61,5 +67,21 @@ public class Container {
         Container.articleRepository = articleRepository;
     }
 
+
+    public static MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
+
+    public static void setMemberRepository(MemberRepository memberRepository) {
+        Container.memberRepository = memberRepository;
+    }
+
+    public static MemberService getMemberService() {
+        return memberService;
+    }
+
+    public static void setMemberService(MemberService memberService) {
+        Container.memberService = memberService;
+    }
 
 }

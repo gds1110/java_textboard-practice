@@ -37,7 +37,7 @@ public class App {
 
 
 
-            System.out.printf("%s) ",promptName);
+            System.out.printf("%s ",promptName);
             String cmd = sc.nextLine();
 
             rq.setCommand(cmd);
