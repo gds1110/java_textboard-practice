@@ -64,9 +64,9 @@ public class ArticleRepository {
         articleList = new ArrayList<>();
     }
 
-    public int write(String title, String content) {
+    public int write(int boardId, String title, String content) {
         int id = articleLastId+1;
-        Article article = new Article(id,title,content);
+        Article article = new Article(boardId,id,title,content);
         articleList.add(article);
         articleLastId = id;
 

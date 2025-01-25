@@ -22,13 +22,13 @@ public class ArticleService {
         {
             String title = "제목"+i;
             String content = "내용"+i;
-            write(title,content);
-            articleRepository.getArticleList().add(new Article(i,"제목"+i,"내용"+i));
+            write(0, title,content);
+            articleRepository.getArticleList().add(new Article(0,i,"제목"+i,"내용"+i));
         }
     }
 
-    public int write(String title, String content) {
-        return articleRepository.write(title,content);
+    public int write(int boardId, String title, String content) {
+        return articleRepository.write(boardId,title,content);
 
     }
 

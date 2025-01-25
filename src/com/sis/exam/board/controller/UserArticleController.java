@@ -32,7 +32,8 @@ public  class UserArticleController {
         System.out.printf("내용 : ");
         String content =Container.getSc().nextLine();
 
-        int id = articleService.write(title,content);
+        int boardId =0;
+        int id = articleService.write(boardId,title,content);
 
         System.out.println(id+"번 게시물이 등록되었습니다.\n");
         System.out.println("생성된 게시물 객체 : "+getArticleById(id));
